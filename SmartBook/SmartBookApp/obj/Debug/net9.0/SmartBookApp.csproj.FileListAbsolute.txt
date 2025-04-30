@@ -1,0 +1,15 @@
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.GeneratedMSBuildEditorConfig.editorconfig
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.AssemblyInfoInputs.cache
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.AssemblyInfo.cs
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.csproj.CoreCompileInputs.cache
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.sourcelink.json
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/bin/Debug/net9.0/SmartBookApp
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/bin/Debug/net9.0/SmartBookApp.deps.json
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/bin/Debug/net9.0/SmartBookApp.runtimeconfig.json
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/bin/Debug/net9.0/SmartBookApp.dll
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/bin/Debug/net9.0/SmartBookApp.pdb
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.dll
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/refint/SmartBookApp.dll
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.pdb
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/SmartBookApp.genruntimeconfig.cache
+/Users/olenakutasevych/Desktop/Lexicon/Övningar/SmartBook/SmartBook/SmartBookApp/obj/Debug/net9.0/ref/SmartBookApp.dll
