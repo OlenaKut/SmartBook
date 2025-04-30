@@ -87,10 +87,10 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Add a new book to the library:");
 
-        string title = input.PromptForValidatedInput("Title", s => true, "Title is required.");
-        string author = input.PromptForValidatedInput("Author", s => true, "Author is required.");
-        string isbn = input.PromptForValidatedInput("ISBN", input.IsValidIsbn, "ISBN must be exactly 10 digits.");
-        string genre = input.PromptForValidatedInput("Genre", s => true, "Genre is required.");
+        string title = input.PromptForValidatedInput("Title", s => true, "Title is required.").Trim();
+        string author = input.PromptForValidatedInput("Author", s => true, "Author is required.").Trim();
+        string isbn = input.PromptForValidatedInput("ISBN", input.IsValidIsbn, "ISBN must be exactly 10 digits.").Trim();
+        string genre = input.PromptForValidatedInput("Genre", s => true, "Genre is required.").Trim();
 
         int? yearPublished = input.PromptForOptionalYear("Year Published");
 

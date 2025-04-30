@@ -22,13 +22,5 @@
     "Genre": "Genre",
     "IsLoaned": true,
     "YearPublished": 2025
-  },
-  {
-    "Title": "Game ",
-    "Author": "John",
-    "ISBN": "4444444444",
-    "Genre": "pop",
-    "IsLoaned": false,
-    "YearPublished": null
   }
 ]
