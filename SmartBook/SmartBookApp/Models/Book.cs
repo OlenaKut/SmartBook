@@ -21,7 +21,7 @@ public class Book
     public override string ToString()
     {
         string status = IsLoaned ? "Lend" : "Available";
-        return $"{Title} by {Author} (ISBN: {ISBN}) - Genre: {Genre}, Year Published: {YearPublished}. Status: {status}";
+        return $"{Title} \nby {Author} \nISBN: {ISBN} \nGenre: {Genre}, \nYear Published: {YearPublished} \nStatus: {status}";
     }
     public override bool Equals(object? obj)
     {

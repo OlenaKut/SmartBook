@@ -113,7 +113,7 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Remove a book from the library:");
         Console.Write("Enter the title or ISBN of the book to remove: ");
-        string identifier = Console.ReadLine() ?? string.Empty;
+        string identifier = (Console.ReadLine() ?? string.Empty).Trim();
 
         try
         {
@@ -131,7 +131,9 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Find a book in the library:");
         Console.Write("Enter a search term (title or author): ");
-        string searchTerm = Console.ReadLine() ?? throw new ArgumentNullException(nameof(searchTerm));
+        string searchTerm = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(searchTerm))
+            throw new ArgumentNullException(nameof(searchTerm));
         var results = library.FindBook(searchTerm);
 
         if (!results.Any())
@@ -142,7 +144,11 @@ public class MenuHandler
 
         Console.WriteLine("\n--- Search results ---");
         foreach (var book in results)
+        {
+            Console.WriteLine(new string('-', 100));
             Console.WriteLine(book);
+        }
+
     }
 
     private void SortBooks()
@@ -150,7 +156,9 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Sort books in the library:");
         Console.Write("Enter the sorting criteria (Title, Author, YearPublished): ");
-        string sortBy = Console.ReadLine() ?? throw new ArgumentNullException(nameof(sortBy));
+        string sortBy = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(sortBy))
+            throw new ArgumentNullException(nameof(sortBy));
         if (!Enum.TryParse<Library.SortOption>(sortBy, true, out var sortOption))
         {
             Console.WriteLine("Invalid sorting criteria. Please try again.");
@@ -166,7 +174,10 @@ public class MenuHandler
 
         Console.WriteLine("\n--- Sorted Books ---");
         foreach (var book in sortedBooks)
+        {
+            Console.WriteLine(new string('-', 100));
             Console.WriteLine(book);
+        }
     }
 
     private void LoanBook()
@@ -174,7 +185,9 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Loan a book from the library:");
         Console.Write("Enter the ISBN, title or author of the book to loan: ");
-        string isbn = Console.ReadLine() ?? throw new ArgumentNullException(nameof(isbn));
+        string isbn = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(isbn))
+            throw new ArgumentNullException(nameof(isbn));
 
         try
         {
@@ -191,7 +204,9 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Return a book to the library:");
         Console.Write("Enter the ISBN, title or author of the book to return: ");
-        string isbn = Console.ReadLine() ?? throw new ArgumentNullException(nameof(isbn));
+        string isbn = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(isbn))
+            throw new ArgumentNullException(nameof(isbn));
 
         try
         {
@@ -217,7 +232,11 @@ public class MenuHandler
 
         Console.WriteLine("\n--- Books in Library ---");
         foreach (var book in allBooks)
+        {
+            Console.WriteLine(new string('-', 100));
             Console.WriteLine(book);
+        }
+
     }
 
 }
