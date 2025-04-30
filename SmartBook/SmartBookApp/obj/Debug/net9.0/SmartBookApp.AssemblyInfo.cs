@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartBookApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1367e4d225837fd07c77ac2038cffc9cf12e4d59")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7fbdcf08a725dda1a4d182f983be33168b321c94")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartBookApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartBookApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

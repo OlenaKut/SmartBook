@@ -20,15 +20,15 @@
     "Author": "Olena",
     "ISBN": "1234567891",
     "Genre": "Genre",
-    "IsLoaned": false,
+    "IsLoaned": true,
     "YearPublished": 2025
   },
   {
-    "Title": "a",
-    "Author": "s",
-    "ISBN": "1111111111",
-    "Genre": "asa",
+    "Title": "Game ",
+    "Author": "John",
+    "ISBN": "4444444444",
+    "Genre": "pop",
     "IsLoaned": false,
-    "YearPublished": 2022
+    "YearPublished": null
   }
 ]
