@@ -1,0 +1,17 @@
+[
+  {
+    "CardId": "1",
+    "Name": "Olena",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "2",
+    "Name": "Olle",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "3",
+    "Name": "Maria",
+    "LoanedBooks": []
+  }
+]

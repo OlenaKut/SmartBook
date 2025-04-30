@@ -9,7 +9,40 @@ namespace SmartBookApp.Services;
 public class Library
 {
 
+    public List<User> Users { get; set; } = new();
+
+    public void RegisterUser(User user)
+    {
+        if (Users.Any(u => u.CardId == user.CardId))
+            throw new ArgumentException("A user with this card ID already exists.");
+        Users.Add(user);
+    }
+
+    public User? FindUserByCardId(string cardId)
+    {
+        return Users.FirstOrDefault(u => u.CardId == cardId);
+    }
     public List<Book> Books { get; set; } = new();
+
+    public void SaveUsersToFile(string filePath)
+    {
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        var json = JsonSerializer.Serialize(Users, options);
+        File.WriteAllText(filePath, json);
+    }
+
+    public void LoadUsersFromFile(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            var json = File.ReadAllText(filePath);
+            Users = JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
+        }
+        else
+        {
+            Users = new List<User>();
+        }
+    }
 
 
     public void AddBook(Book book)
@@ -30,6 +63,14 @@ public class Library
         if (bookToRemove != null)
         {
             Books.Remove(bookToRemove);
+            foreach (var user in Users)
+            {
+                if (user.LoanedBooks.Contains(bookToRemove))
+                {
+                    user.LoanedBooks.Remove(bookToRemove);
+                    break;
+                }
+            }
         }
         else
         {
@@ -60,8 +101,12 @@ public class Library
         };
     }
 
-    public void LoanBook(string identifier)
+    public void LoanBook(string identifier, string cardId)
     {
+
+        var user = FindUserByCardId(cardId);
+        if (user == null)
+            throw new ArgumentException("User not found.");
 
         var matches = Books
                .Where(b =>
@@ -103,7 +148,9 @@ public class Library
         }
 
         book.IsLoaned = true;
-        Console.WriteLine("Book loaned successfully.");
+        user.LoanedBooks.Add(book);
+        Console.WriteLine($"Book loaned successfully to {user.Name} (Card ID: {user.CardId}).");
+
     }
 
 
@@ -153,6 +200,17 @@ public class Library
         }
 
         book.IsLoaned = false;
+
+        foreach (var user in Users)
+        {
+            if (user.LoanedBooks.Contains(book))
+            {
+                user.LoanedBooks.Remove(book);
+                break;
+            }
+        }
+
+
         Console.WriteLine("Book returned successfully.");
     }
 

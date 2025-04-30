@@ -1,34 +1,10 @@
 [
   {
-    "Title": "The Machine",
-    "Author": "Daria Piskozub",
-    "ISBN": "1111111111",
-    "Genre": "Fantasy",
-    "IsLoaned": false,
-    "YearPublished": 2023
-  },
-  {
-    "Title": "Gemma",
-    "Author": "Daria Piskozub",
-    "ISBN": "2222222222",
-    "Genre": "Fantasy",
-    "IsLoaned": false,
-    "YearPublished": 2024
-  },
-  {
     "Title": "Amadoka",
     "Author": "Andruxovych Sophia",
     "ISBN": "3333333333",
     "Genre": "Drama",
     "IsLoaned": false,
     "YearPublished": 2020
-  },
-  {
-    "Title": "I see you are interested in darkness",
-    "Author": "Illarion Pavljuk",
-    "ISBN": "4444444444",
-    "Genre": "Thriller",
-    "IsLoaned": false,
-    "YearPublished": 2019
   }
 ]

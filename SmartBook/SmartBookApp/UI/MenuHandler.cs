@@ -11,12 +11,15 @@ public class MenuHandler
     private readonly Library library = new();
     private readonly InputHelper input = new();
     private const string FilePath = "library.json";
+    private const string UsersFilePath = "users.json";
+
 
     public void MainMenu()
     {
         try
         {
             library.LoadFromFile(FilePath);
+            library.LoadUsersFromFile(UsersFilePath);
         }
         catch (FileNotFoundException ex)
         {
@@ -29,6 +32,7 @@ public class MenuHandler
         {
             Console.Clear();
             Console.WriteLine("Welcome to the SmartBook Library📚!");
+            Console.WriteLine("0. Register User");
             Console.WriteLine("1. Add Book");
             Console.WriteLine("2. Remove Book");
             Console.WriteLine("3. Find Book");
@@ -43,6 +47,9 @@ public class MenuHandler
 
             switch (choice)
             {
+                case "0":
+                    RegisterUser();
+                    break;
                 case "1":
                     AddBook();
                     break;
@@ -66,6 +73,7 @@ public class MenuHandler
                     break;
                 case "8":
                     library.SaveToFile(FilePath);
+                    library.SaveUsersToFile(UsersFilePath);
                     Console.WriteLine("Library saved. Goodbye!");
                     running = false;
                     break;
@@ -184,14 +192,24 @@ public class MenuHandler
     {
         Console.Clear();
         Console.WriteLine("Loan a book from the library:");
+
+        Console.Write("Enter the Card ID of the user: ");
+        string cardId = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(cardId))
+        {
+            Console.WriteLine("Card ID is required.");
+            return;
+        }
+
+
         Console.Write("Enter the ISBN, title or author of the book to loan: ");
-        string isbn = (Console.ReadLine() ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(isbn))
-            throw new ArgumentNullException(nameof(isbn));
+        string input = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(input))
+            throw new ArgumentNullException(nameof(input));
 
         try
         {
-            library.LoanBook(isbn);
+            library.LoanBook(input, cardId);
         }
         catch (ArgumentException ex)
         {
@@ -203,14 +221,15 @@ public class MenuHandler
     {
         Console.Clear();
         Console.WriteLine("Return a book to the library:");
+
         Console.Write("Enter the ISBN, title or author of the book to return: ");
-        string isbn = (Console.ReadLine() ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(isbn))
-            throw new ArgumentNullException(nameof(isbn));
+        string input = (Console.ReadLine() ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(input))
+            throw new ArgumentNullException(nameof(input));
 
         try
         {
-            library.MarkAsAvailable(isbn);
+            library.MarkAsAvailable(input);
         }
         catch (ArgumentException ex)
         {
@@ -237,6 +256,24 @@ public class MenuHandler
             Console.WriteLine(book);
         }
 
+    }
+
+    public void RegisterUser()
+    {
+        Console.Clear();
+        Console.WriteLine("Register a new user:");
+        string cardId = input.PromptForValidatedInput("Card ID", s => !string.IsNullOrWhiteSpace(s), "Card ID is required.");
+        string name = input.PromptForValidatedInput("Name", s => !string.IsNullOrWhiteSpace(s), "Name is required.");
+
+        try
+        {
+            library.RegisterUser(new User(cardId.Trim(), name.Trim()));
+            Console.WriteLine("User registered successfully.");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 
 }
