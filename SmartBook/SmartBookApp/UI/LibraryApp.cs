@@ -80,20 +80,35 @@ public class LibraryApp
         }
     }
 
+    private string PromptForValidatedInput(string prompt, Func<string, bool> isValid, string errorMessage)
+    {
+        string? input;
+        do
+        {
+            Console.Write($"{prompt}: ");
+            input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input) || !isValid(input))
+            {
+                Console.WriteLine(errorMessage);
+                input = null;
+            }
+
+        } while (input == null);
+
+        return input;
+    }
     private void AddBook()
     {
         Console.Clear();
         Console.WriteLine("Add a new book to the library:");
-        Console.Write("Title: ");
-        string title = Console.ReadLine() ?? throw new ArgumentNullException(nameof(title));
-        Console.Write("Author: ");
-        string author = Console.ReadLine() ?? throw new ArgumentNullException(nameof(author));
-        Console.Write("ISBN: ");
-        string isbn = Console.ReadLine() ?? throw new ArgumentNullException(nameof(isbn));
-        Console.Write("Genre: ");
-        string genre = Console.ReadLine() ?? throw new ArgumentNullException(nameof(genre));
-        Console.Write("Year Published (optional): ");
-        int? yearPublished = int.TryParse(Console.ReadLine(), out var year) ? year : null;
+
+        string title = PromptForValidatedInput("Title", s => true, "Title is required.");
+        string author = PromptForValidatedInput("Author", s => true, "Author is required.");
+        string isbn = PromptForValidatedInput("ISBN", IsValidIsbn, "ISBN must be exactly 10 digits.");
+        string genre = PromptForValidatedInput("Genre", s => true, "Genre is required.");
+
+        int? yearPublished = PromptForOptionalYear("Year Published");
 
         try
         {
@@ -106,6 +121,38 @@ public class LibraryApp
             Console.WriteLine($"Error: {ex.Message}");
         }
     }
+    private bool IsValidIsbn(string isbn)
+    {
+        return isbn.All(char.IsDigit) && isbn.Length == 10;
+    }
+    private int? PromptForOptionalYear(string prompt)
+    {
+        while (true)
+        {
+            Console.Write($"{prompt} (optional): ");
+            string? input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input))
+                return null; // User skipped year
+
+            if (int.TryParse(input, out int parsedYear))
+            {
+                if (parsedYear <= 2025 && parsedYear >= 0)
+                {
+                    return parsedYear;
+                }
+                else
+                {
+                    Console.WriteLine("Year must be a number less than or equal to 2025.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a numeric year.");
+            }
+        }
+    }
+
 
     private void RemoveBook()
     {
@@ -172,13 +219,12 @@ public class LibraryApp
     {
         Console.Clear();
         Console.WriteLine("Loan a book from the library:");
-        Console.Write("Enter the ISBN of the book to loan: ");
+        Console.Write("Enter the ISBN, title or author of the book to loan: ");
         string isbn = Console.ReadLine() ?? throw new ArgumentNullException(nameof(isbn));
 
         try
         {
             library.LoanBook(isbn);
-            Console.WriteLine("Book loaned successfully.");
         }
         catch (ArgumentException ex)
         {
@@ -190,13 +236,12 @@ public class LibraryApp
     {
         Console.Clear();
         Console.WriteLine("Return a book to the library:");
-        Console.Write("Enter the ISBN of the book to return: ");
+        Console.Write("Enter the ISBN, title or author of the book to return: ");
         string isbn = Console.ReadLine() ?? throw new ArgumentNullException(nameof(isbn));
 
         try
         {
             library.MarkAsAvailable(isbn);
-            Console.WriteLine("Book returned successfully.");
         }
         catch (ArgumentException ex)
         {

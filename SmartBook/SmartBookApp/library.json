@@ -1,10 +1,34 @@
 [
   {
+    "Title": "The Machine",
+    "Author": "Daria Piskozub",
+    "ISBN": "4545",
+    "Genre": "Horror",
+    "IsLoaned": true,
+    "YearPublished": 2027
+  },
+  {
     "Title": "Gemma",
-    "Author": "Olena Kut",
-    "ISBN": "1254",
+    "Author": "Daria Piskozub",
+    "ISBN": "12345",
     "Genre": "Fantasy",
     "IsLoaned": false,
-    "YearPublished": 2024
+    "YearPublished": 2023
+  },
+  {
+    "Title": "Olena",
+    "Author": "Olena",
+    "ISBN": "1234567891",
+    "Genre": "Genre",
+    "IsLoaned": false,
+    "YearPublished": 2025
+  },
+  {
+    "Title": "a",
+    "Author": "s",
+    "ISBN": "1111111111",
+    "Genre": "asa",
+    "IsLoaned": false,
+    "YearPublished": 2022
   }
 ]

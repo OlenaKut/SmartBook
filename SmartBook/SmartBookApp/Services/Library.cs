@@ -60,36 +60,100 @@ public class Library
         };
     }
 
-    public void LoanBook(string isbn)
+    public void LoanBook(string identifier)
     {
-        var book = Books.FirstOrDefault(b => b.ISBN == isbn);
-        if (book == null)
+
+        var matches = Books
+               .Where(b =>
+                   b.ISBN.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+                   b.Title.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+                   b.Author.Equals(identifier, StringComparison.OrdinalIgnoreCase))
+               .ToList();
+
+        if (matches.Count == 0)
         {
-            throw new ArgumentException("Book not found in the library.");
+            throw new ArgumentException("No matching book found.");
         }
 
+        while (matches.Count > 1)
+        {
+            Console.WriteLine("Multiple books match the search criteria:");
+            foreach (var b in matches)
+            {
+                Console.WriteLine($"- {b.Title} by {b.Author} (ISBN: {b.ISBN})");
+            }
+
+            Console.Write("Please enter the ISBN of the book you want to loan: ");
+            string? isbnInput = Console.ReadLine();
+
+            matches = Books
+                .Where(b => b.ISBN.Equals(isbnInput, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (matches.Count == 0)
+            {
+                Console.WriteLine("No book found with that ISBN.");
+                return;
+            }
+        }
+        var book = matches.First();
         if (book.IsLoaned)
         {
             throw new ArgumentException("Book is already loaned.");
         }
 
         book.IsLoaned = true;
+        Console.WriteLine("Book loaned successfully.");
     }
 
-    public void MarkAsAvailable(string isbn)
+
+
+
+    public void MarkAsAvailable(string identifier)
     {
-        var book = Books.FirstOrDefault(b => b.ISBN == isbn);
-        if (book == null)
+        var matches = Books
+      .Where(b =>
+          b.ISBN.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+          b.Title.Equals(identifier, StringComparison.OrdinalIgnoreCase) ||
+          b.Author.Equals(identifier, StringComparison.OrdinalIgnoreCase))
+      .ToList();
+
+
+        if (matches.Count == 0)
         {
-            throw new ArgumentException("Book not found in the library.");
+            throw new ArgumentException("No matching book found.");
         }
 
+        while (matches.Count > 1)
+        {
+            Console.WriteLine("Multiple books match the search criteria:");
+            foreach (var b in matches)
+            {
+                Console.WriteLine($"- {b.Title} by {b.Author} (ISBN: {b.ISBN})");
+            }
+
+            Console.Write("Please enter the ISBN of the book you want to return: ");
+            string? isbnInput = Console.ReadLine();
+
+            matches = Books
+                .Where(b => b.ISBN.Equals(isbnInput, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (matches.Count == 0)
+            {
+                Console.WriteLine("No book found with that ISBN.");
+                return;
+            }
+        }
+
+        var book = matches.First();
         if (!book.IsLoaned)
         {
             throw new ArgumentException("Book is not currently loaned.");
         }
 
         book.IsLoaned = false;
+        Console.WriteLine("Book returned successfully.");
     }
 
     public void SaveToFile(string filePath)
