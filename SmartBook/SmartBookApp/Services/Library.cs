@@ -10,18 +10,24 @@ public class Library
 {
 
     public List<User> Users { get; set; } = new();
+    private const string LoanedBooksPath = "utlanade_bocker.txt";
+    private const string LogFilePath = "logg.txt";
+
 
     public void RegisterUser(User user)
     {
         if (Users.Any(u => u.CardId == user.CardId))
             throw new ArgumentException("A user with this card ID already exists.");
         Users.Add(user);
+        LogAction($"User added: {user.Name} ({user.CardId})");
     }
 
     public User? FindUserByCardId(string cardId)
     {
         return Users.FirstOrDefault(u => u.CardId == cardId);
     }
+
+
     public List<Book> Books { get; set; } = new();
 
     public void SaveUsersToFile(string filePath)
@@ -52,6 +58,7 @@ public class Library
             throw new ArgumentException("A book with the same ISBN already exists in the library.");
         }
         Books.Add(book);
+        LogAction($"Book added: {book.Title} ({book.ISBN})");
     }
 
     public void RemoveBook(string identifier)
@@ -63,6 +70,7 @@ public class Library
         if (bookToRemove != null)
         {
             Books.Remove(bookToRemove);
+            LogAction($"Book removed: {bookToRemove.Title} ({bookToRemove.ISBN})");
             foreach (var user in Users)
             {
                 if (user.LoanedBooks.Contains(bookToRemove))
@@ -71,6 +79,7 @@ public class Library
                     break;
                 }
             }
+            ExportLoanedBooks(LoanedBooksPath);
         }
         else
         {
@@ -148,12 +157,12 @@ public class Library
         }
 
         book.IsLoaned = true;
+        ExportLoanedBooks(LoanedBooksPath);
         user.LoanedBooks.Add(book);
+        LogAction($"Book loaned: {book.Title} ({book.ISBN})");
         Console.WriteLine($"Book loaned successfully to {user.Name} (Card ID: {user.CardId}).");
 
     }
-
-
 
 
     public void MarkAsAvailable(string identifier)
@@ -200,6 +209,8 @@ public class Library
         }
 
         book.IsLoaned = false;
+        ExportLoanedBooks(LoanedBooksPath);
+        LogAction($"Book returned: {book.Title} ({book.ISBN})");
 
         foreach (var user in Users)
         {
@@ -231,6 +242,36 @@ public class Library
         {
             throw new FileNotFoundException("The specified file was not found.");
         }
+    }
+
+    public void ExportLoanedBooks(string filePath)
+    {
+        var loanedBooks = Books.Where(b => b.IsLoaned).ToList();
+
+        if (!loanedBooks.Any())
+        {
+            File.WriteAllText(filePath, "No books are on loan..\n");
+            return;
+        }
+
+        using var writer = new StreamWriter(filePath);
+        writer.WriteLine("Report: Books on loan ");
+        writer.WriteLine($"Generated: {DateTime.Now}");
+        writer.WriteLine(new string('-', 80));
+
+        foreach (var book in loanedBooks)
+        {
+            writer.WriteLine(book);
+            writer.WriteLine(new string('-', 80));
+        }
+    }
+
+
+
+    private void LogAction(string message)
+    {
+        var logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}";
+        File.AppendAllText(LogFilePath, logEntry + Environment.NewLine);
     }
 
 }

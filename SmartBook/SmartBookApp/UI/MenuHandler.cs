@@ -10,6 +10,7 @@ public class MenuHandler
 {
     private readonly Library library = new();
     private readonly InputHelper input = new();
+    private readonly InputHelper userInput = new();
     private const string FilePath = "library.json";
     private const string UsersFilePath = "users.json";
 
@@ -40,7 +41,9 @@ public class MenuHandler
             Console.WriteLine("5. Loan Book");
             Console.WriteLine("6. Return Book");
             Console.WriteLine("7. List All Books");
-            Console.WriteLine("8. Exit");
+            Console.WriteLine("8. View User's Borrowed Books");
+            Console.WriteLine("9. Export Loaned Books");
+            Console.WriteLine("10. Save and exit");
             Console.Write("Please select an option: ");
 
             var choice = Console.ReadLine();
@@ -72,6 +75,12 @@ public class MenuHandler
                     ListBooks();
                     break;
                 case "8":
+                    ViewUserLoans();
+                    break;
+                case "9":
+                    ExportLoanedBooks();
+                    break;
+                case "10":
                     library.SaveToFile(FilePath);
                     library.SaveUsersToFile(UsersFilePath);
                     Console.WriteLine("Library saved. Goodbye!");
@@ -120,13 +129,24 @@ public class MenuHandler
     {
         Console.Clear();
         Console.WriteLine("Remove a book from the library:");
-        Console.Write("Enter the title or ISBN of the book to remove: ");
-        string identifier = (Console.ReadLine() ?? string.Empty).Trim();
+
+        string identifier = "";
+        while (string.IsNullOrWhiteSpace(identifier))
+        {
+            Console.Write("Enter the title or ISBN of the book to remove: ");
+            identifier = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (string.IsNullOrWhiteSpace(identifier))
+            {
+                Console.WriteLine("Input cannot be empty. Please try again.\n");
+            }
+        }
 
         try
         {
             library.RemoveBook(identifier);
             Console.WriteLine("Book removed.");
+
         }
         catch (ArgumentException ex)
         {
@@ -193,23 +213,22 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Loan a book from the library:");
 
-        Console.Write("Enter the Card ID of the user: ");
-        string cardId = (Console.ReadLine() ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(cardId))
+        User? user = null;
+        while (user == null)
         {
-            Console.WriteLine("Card ID is required.");
-            return;
+            string cardId = userInput.PromptForRequiredInput("Enter the Card ID of the user");
+            user = library.FindUserByCardId(cardId);
+            if (user == null)
+            {
+                Console.WriteLine("No user found with that Card ID. Please try again.\n");
+            }
         }
 
-
-        Console.Write("Enter the ISBN, title or author of the book to loan: ");
-        string input = (Console.ReadLine() ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(input))
-            throw new ArgumentNullException(nameof(input));
+        string input = userInput.PromptForRequiredInput("Enter the ISBN, title or author of the book to loan");
 
         try
         {
-            library.LoanBook(input, cardId);
+            library.LoanBook(input, user.CardId);
         }
         catch (ArgumentException ex)
         {
@@ -222,10 +241,18 @@ public class MenuHandler
         Console.Clear();
         Console.WriteLine("Return a book to the library:");
 
-        Console.Write("Enter the ISBN, title or author of the book to return: ");
-        string input = (Console.ReadLine() ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(input))
-            throw new ArgumentNullException(nameof(input));
+        string input = "";
+
+        while (string.IsNullOrWhiteSpace(input))
+        {
+            Console.Write("Enter the ISBN, title or author of the book to return: ");
+            input = (Console.ReadLine() ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Input cannot be empty. Please try again.\n");
+            }
+        }
 
         try
         {
@@ -273,6 +300,53 @@ public class MenuHandler
         catch (ArgumentException ex)
         {
             Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    private void ViewUserLoans()
+    {
+        Console.Clear();
+        Console.WriteLine("View a user's borrowed books:");
+
+
+        string cardId = userInput.PromptForRequiredInput("Enter the Card ID of the user");
+
+        var user = library.FindUserByCardId(cardId);
+
+        if (user == null)
+        {
+            Console.WriteLine("No user found with that Card ID.");
+            return;
+        }
+
+        Console.WriteLine($"\nUser: {user.Name} (Card ID: {user.CardId})");
+
+        if (!user.LoanedBooks.Any())
+        {
+            Console.WriteLine($"\n{user.Name} has no borrowed books.");
+            return;
+        }
+
+        Console.WriteLine("\n Borrowed Books:");
+        foreach (var book in user.LoanedBooks)
+        {
+            Console.WriteLine(new string('-', 80));
+            Console.WriteLine(book);
+        }
+    }
+
+    private void ExportLoanedBooks()
+    {
+        const string reportPath = "loaned_books.txt";
+
+        try
+        {
+            library.ExportLoanedBooks(reportPath);
+            Console.WriteLine($"The report has been saved to '{reportPath}'.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during export: {ex.Message}");
         }
     }
 

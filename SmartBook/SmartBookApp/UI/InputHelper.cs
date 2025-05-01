@@ -60,4 +60,22 @@ public class InputHelper
             }
         }
     }
+
+    public string PromptForRequiredInput(string prompt)
+    {
+        string userInput = "";
+
+        while (string.IsNullOrWhiteSpace(userInput))
+        {
+            Console.Write($"{prompt}: ");
+            userInput = (Console.ReadLine() ?? string.Empty).Trim();
+
+            if (string.IsNullOrWhiteSpace(userInput))
+            {
+                Console.WriteLine($"{prompt} is required. Please try again.\n");
+            }
+        }
+
+        return userInput;
+    }
 }

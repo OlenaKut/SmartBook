@@ -2,7 +2,16 @@
   {
     "CardId": "1",
     "Name": "Olena",
-    "LoanedBooks": []
+    "LoanedBooks": [
+      {
+        "Title": "First",
+        "Author": "Someone",
+        "ISBN": "1111111111",
+        "Genre": "Some",
+        "IsLoaned": true,
+        "YearPublished": 2025
+      }
+    ]
   },
   {
     "CardId": "2",
@@ -12,6 +21,26 @@
   {
     "CardId": "3",
     "Name": "Maria",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "4",
+    "Name": "Helen",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "8",
+    "Name": "Roma",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "9",
+    "Name": "Alisa",
+    "LoanedBooks": []
+  },
+  {
+    "CardId": "6",
+    "Name": "Ron",
     "LoanedBooks": []
   }
 ]

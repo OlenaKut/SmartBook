@@ -115,3 +115,7 @@ This project demonstrates a simple but complete C# console application for manag
  - Data saving using JSON file storage.
  - A clear code structure with separation of logic (Models, Services, UI).
  - Unit tests using xUnit to ensure the core logic works as expected.
+
+
+
+ ## 
