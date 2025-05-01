@@ -42,5 +42,10 @@
     "CardId": "6",
     "Name": "Ron",
     "LoanedBooks": []
+  },
+  {
+    "CardId": "7",
+    "Name": "User",
+    "LoanedBooks": []
   }
 ]
